@@ -1,0 +1,83 @@
+---
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+import LinkedIn from "@components/icons/LinkedIn.astro";
+import GitHub from "@components/icons/GitHub.astro";
+import Email from "@components/icons/Email.astro";
+
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <h4 class="animate font-semibold text-black dark:text-white">
+      Steven Lam
+    </h4>
+    <div class="animate space-y-12">
+      <section>
+        <article class=" animate space-y-2">
+          <p>
+            Software engineer based in Sydney, Australia.
+          </p>
+          <p>
+            Currently working at Canva where I build seamless user experiences for our 200+ million monthly active users.<br>
+          </p>
+          <p>
+            I previously studied Computer Science at the University of New South Wales (UNSW) and have experience across B2B and B2C tech companies.
+          </p>
+        </article>
+      </section>
+      <section class="animate space-y-4">
+        <span>
+          Take a look at some of my <a href="/work" class="bg-[#bbf7d0] text-black underline decoration-red hover:bg-[#cafadb] hover:text-black/70">work</a>, <a href="/projects" class="bg-[#f5d5b0] text-black underline decoration-red hover:bg-[#f7dbba] hover:text-black/70">projects</a>
+          or feel free to <button id="get-in-touch" class="text-black dark:text-white underline hover:text-black/70 dark:hover:text-gray-300">get in touch.</button>
+       </span>
+       <div 
+       id="contact-info" 
+       class="opacity-0 hidden transition-opacity duration-[500ms] mt-4"
+     >
+     <ul class="flex flex-wrap gap-2">
+      <li class="line-clamp-1">
+        <Link href={SOCIALS.find(s => s.NAME === "linkedin")?.HREF || "#"} external aria-label="LinkedIn Profile">
+          <LinkedIn />
+        </Link>
+      </li>
+      <li class="line-clamp-1">
+        <Link href={SOCIALS.find(s => s.NAME === "github")?.HREF || "#"} external aria-label="GitHub Profile">
+          <GitHub />
+        </Link>
+      </li>
+      <li class="line-clamp-1">
+        <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
+          <Email />
+        </Link>
+      </li>
+    </ul>      </div>
+      </section>
+    </div>
+    <script>
+      function initContactButton() {
+        const button = document.getElementById("get-in-touch");
+        const contactInfo = document.getElementById("contact-info");
+
+        button?.addEventListener("click", () => {
+          if (contactInfo?.classList.contains("hidden")) {
+            // Fade in
+            contactInfo?.classList.remove("hidden");
+            setTimeout(() => contactInfo?.classList.remove("opacity-0"), 10);
+          } else {
+            // Fade out
+            contactInfo?.classList.add("opacity-0");
+            setTimeout(() => contactInfo?.classList.add("hidden"), 500);
+          }
+        });
+      }
+
+      // Run on initial load
+      initContactButton();
+      // Run after view transitions
+      document.addEventListener("astro:after-swap", initContactButton);
+    </script>
+  </Container>
+</PageLayout>

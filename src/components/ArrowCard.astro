@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  entry: CollectionEntry<"projects"> | CollectionEntry<"work">;
+  isFirst: boolean;
+  isLast: boolean;
+};
+
+const { entry, isFirst, isLast } = Astro.props;
+
+const title = entry.collection === "work" ? entry.data.company : entry.data.title;
+const description = entry.collection === "work" ? entry.data.role : entry.data.description;
+---
+
+<div class="relative">
+  <!-- Card Wrapper -->
+  <div
+    class={`group flex flex-nowrap transition-colors duration-300 ease-in-out `}
+  >
+    <a
+      href={`/${entry.collection}/${entry.slug}`}
+      class=`block ${!isLast && "border-b"} py-4 pr-8 border-zinc-200 dark:border-zinc-800 w-full`
+    >
+      <!-- Content -->
+      <div class="flex flex-col flex-1 truncate">
+        <div class="font-semibold">{title}</div>
+        <div class="text-sm">{description}</div>
+      </div>
+      <!-- Arrow Icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        class="absolute top-1/2 right-2 -translate-y-1/2 size-5 stroke-2 fill-none stroke-current"
+      >
+        <line
+          x1="5"
+          y1="12"
+          x2="19"
+          y2="12"
+          class="translate-x-3 group-hover:translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"
+        />
+        <polyline
+          points="12 5 19 12 12 19"
+          class="-translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out"
+        />
+      </svg>
+    </a>
+    <aside class=`absolute -z-10 inset-0 -inset-x-4 -top-[1px] group-hover:bg-black/5 dark:group-hover:bg-white/5 group-hover:text-black dark:group-hover:text-white transition-colors duration-300 ease-in-out ${
+      isFirst ? "rounded-t-lg" : ""
+    } ${isLast ? "rounded-b-lg" : ""} ${
+      !isFirst && !isLast ? "rounded-none" : ""
+    }`></aside>
+  </div>
+
+  {!isLast && (
+    <div
+      class="absolute inset-x-0 bottom-0 w-0 border-b border-zinc-200 dark:border-zinc-800 group-hover:w-full transition-all duration-300 ease-in-out"
+    ></div>
+  )}
+</div>
