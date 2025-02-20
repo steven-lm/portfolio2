@@ -61,17 +61,23 @@ import Email from "@components/icons/Email.astro";
         const button = document.getElementById("get-in-touch");
         const contactInfo = document.getElementById("contact-info");
 
-        button?.addEventListener("click", () => {
-          if (contactInfo?.classList.contains("hidden")) {
-            // Fade in
-            contactInfo?.classList.remove("hidden");
-            setTimeout(() => contactInfo?.classList.remove("opacity-0"), 10);
-          } else {
-            // Fade out
-            contactInfo?.classList.add("opacity-0");
-            setTimeout(() => contactInfo?.classList.add("hidden"), 500);
-          }
-        });
+        if (button && button.parentNode) {
+          // Remove existing event listeners first
+          const newButton = button.cloneNode(true) as HTMLElement;
+          button.parentNode.replaceChild(newButton, button);
+          
+          newButton.addEventListener("click", () => {
+            if (contactInfo?.classList.contains("hidden")) {
+              // Fade in
+              contactInfo?.classList.remove("hidden");
+              setTimeout(() => contactInfo?.classList.remove("opacity-0"), 10);
+            } else {
+              // Fade out
+              contactInfo?.classList.add("opacity-0");
+              setTimeout(() => contactInfo?.classList.add("hidden"), 500);
+            }
+          });
+        }
       }
 
       // Run on initial load
